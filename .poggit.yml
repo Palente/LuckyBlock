@@ -4,4 +4,5 @@ branches:
 projects:
   LuckyBlock:
     path: ""
+    icon: "Lucky_Block.jpg"
 ...
