@@ -1,0 +1,120 @@
+version: 0.0.1
+#usage of EconomyAPI to add money set it to true if you have the plugin
+#to false if you dont have the plugin
+#IF YOU HAVE ANOTHER PLUGIN SET IT TO FALSE!
+usage_of_EconomyAPI: "true"
+#THE ID OF THE BLOCK OF LUCKYBLOCK 19 for sponge
+LuckyBlockId: 19
+#if you change the method it will crash..
+#20 possibility
+Chance-0:
+  Type: items
+  #if type items 2more options id Item amount
+  idItems: 364
+  amountItems: 30
+Chance-1:
+  Type: items
+  #if type items 2more options id Item amount
+  idItems: 264
+  amountItems: 10
+Chance-2:
+  Type: blocks
+  #if type is blocks 1option the id of the block
+  idBlocks: 41
+Chance-3:
+  Type: money
+  #if type is money 1option money to add to the player
+  #usage of economyAPI
+  moneyToAdd: 500
+Chance-4:
+  Type: null
+  #if type is null anytthing to do
+Chance-5:
+  Type: Commands
+  #if type is Command say the command to execute without the /
+  #See The Tags
+  command: "say SAY hello to :nameofplayer:"
+  #Who will execute the command the player or the console?
+  executor: "console"
+  #executor: "console"
+Chance-6:
+  Type: items
+  #if type items 2more options id Item amount
+  idItems: 276
+  amountItems: 1
+Chance-7:
+  Type: items
+  #if type items 2more options id Item amount
+  idItems: 46
+  amountItems: 4
+Chance-8:
+  Type: blocks
+  #if type is blocks 1option the id of the block
+  idBlocks: 57
+Chance-9:
+  Type: money
+  #if type is money 1option money to add to the player
+  #usage of economyAPI
+  moneyToAdd: 500
+Chance-10:
+  Type: null
+  #if type is null anything to do it will do anything
+Chance-11:
+  Type: Commands
+  #if type is Command say the command to execute without the /
+  #See The Tags
+  command: "say What's up :nameofplayer:?"
+  #Who will execute the command the player or the console?
+  executor: "console"
+  #executor: "console"
+Chance-12:
+  Type: items
+  #if type items 2more options id Item amount
+  idItems: 48
+  amountItems: 30
+Chance-13:
+  Type: items
+  #if type items 2more options id Item amount
+  idItems: 19
+  amountItems: 4
+Chance-14:
+  Type: blocks
+  #if type is blocks 1option the id of the block
+  idBlocks: 130
+Chance-15:
+  Type: money
+  #if type is money 1option money to add to the player
+  #usage of economyAPI
+  moneyToAdd: 500
+Chance-16:
+  Type: null
+  #if type is null anything to do it will do anything
+Chance-17:
+  Type: Commands
+  #if type is Command say the command to execute without the /
+  #See The Tags
+  command: "tp :nameofplayer: 0 0 0"
+  #Who will execute the command the player or the console?
+  executor: "console"
+  #executor: "console"
+Chance-18:
+  Type: items
+  #if type items 2more options id Item amount
+  idItems: 5
+  amountItems: 30
+Chance-19:
+  Type: items
+  #if type items 2more options id Item amount
+  idItems: 17
+  amountItems: 20
+Chance-20:
+  Type: blocks
+  #if type is blocks 1option the id of the block
+  idBlocks: 45
+
+#TAGS
+#TAGS FOR COMMANDS
+# :nameofplayer: -> the name of the player
+# 
+#
+#COMMANDS WILL BE UPDATED IN FUTURE UPDATE
