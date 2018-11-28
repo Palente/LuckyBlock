@@ -13,4 +13,4 @@ Feel free to open an issue
  - [ ] Rewrite config.yml
 
 ### Icon image
-getted on [MINECRAFT GAMEPEDIA](https://minecraft.gamepedia.com/Mods/Lucky_Block)
+[MINECRAFT GAMEPEDIA](https://minecraft.gamepedia.com/Mods/Lucky_Block)
