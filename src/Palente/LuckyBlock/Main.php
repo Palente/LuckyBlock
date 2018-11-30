@@ -27,7 +27,7 @@ class Main extends PluginBase
 		if($this->config->get("usage_of_EconomyAPI") == "true"){
 			#Maybe one day add other API
 			if(!$this->getServer()->getPluginManager()->getPlugin('EconomyAPI')){
-				self::$logger->error('You have enabled the usage of the plugin EconomyAPI but he is not found');
+				self::$logger->error('You have enabled the usage of the plugin EconomyAPI but the plugin is not found');
 				$this->isEnabled = false;
 				$this->getServer()->getPluginManager()->disablePlugin($this);
 				#
@@ -35,6 +35,12 @@ class Main extends PluginBase
 				$this->mode_eco = true;
 			}
 		}else $this->mode_eco = false;
+
+		/*
+		#For later if i will do a critical change in config
+		if($this->config->get("version") !== $this->getDescription()->version){
+			self::$logger->warning("Critical changes have been made in the new version of the plugin and it seem that your config.yml is a older config. Please delete your config.yml and restart your server");
+		}*/
 	}
 	public static function getInstance(){
 		return self::$instance;

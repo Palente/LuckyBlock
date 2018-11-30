@@ -1,10 +1,10 @@
 name: LuckyBlock
-version: "0.0.1"
+version: "0.0.2"
 author: Palente
 main: Palente\LuckyBlock\Main
 description: "a Lucky Block plugin by Palente"
 website: "https://github.com/Palente"
-depends: ["EconomyAPI"]
+softdepend: ["EconomyAPI"]
 api: 
   - "3.0.0"
   - "3.0.2"
