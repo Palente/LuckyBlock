@@ -5,7 +5,4 @@ main: Palente\LuckyBlock\Main
 description: "a Lucky Block plugin by Palente"
 website: "https://github.com/Palente"
 softdepend: ["EconomyAPI"]
-api: 
-  - "3.0.0"
-  - "3.0.2"
-  - "4.0.0"
+api: [3.2.3]
