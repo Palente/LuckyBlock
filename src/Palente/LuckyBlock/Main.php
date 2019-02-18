@@ -12,6 +12,7 @@ class Main extends PluginBase
 	public static $instance;
 	public static $logger = null;
 	public $mode_eco = false;
+	public $mode_enc = false;
 	public $prefix = TX::BLUE."[".TX::AQUA."LuckyBlock".TX::BLUE."] ".TX::RESET;
 	public function onLoad(){
 		self::$logger = $this->getLogger();
@@ -35,7 +36,18 @@ class Main extends PluginBase
 				$this->mode_eco = true;
 			}
 		}else $this->mode_eco = false;
-
+		if($this->config->get("usage_of_PiggyCustomEnchants") == "true"){
+			#Maybe one day add other API
+			if(!$this->getServer()->getPluginManager()->getPlugin('PiggyCustomEnchants')){
+				self::$logger->error('You have enabled the usage of the plugin PiggyCustomEnchants but the plugin is not found');
+				$this->isEnabled = false;
+				$this->getServer()->getPluginManager()->disablePlugin($this);
+				#
+			}else {
+				$this->piggy= $this->getServer()->getPluginManager()->getPlugin('PiggyCustomEnchants');
+				$this->mode_enc = true;
+			}
+		}else $this->mode_enc = false;
 		/*
 		#For later if i will do a critical change in config
 		if($this->config->get("version") !== $this->getDescription()->version){

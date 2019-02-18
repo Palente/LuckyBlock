@@ -1,13 +1,22 @@
-version: 0.0.2
+version: 0.0.3
 #usage of EconomyAPI to add money set it to true if you have the plugin
 #to false if you dont have the plugin
 #IF YOU HAVE ANOTHER PLUGIN SET IT TO FALSE!
 usage_of_EconomyAPI: "true"
+#usage of PiggyCustomEnchants to give items with enchant set it to true(IF YOU HAVE THE PLUGIN)
+#to false if you dont have the plugin
+#IF YOU HAVE ANOTHER PLUGIN SET IT TO FALSE!
+#ID for enchantment
+#https://github.com/DaPigGuy/PiggyCustomEnchants/blob/master/src/DaPigGuy/PiggyCustomEnchants/CustomEnchants/CustomEnchantsIds.php
+usage_of_PiggyCustomEnchants: "false"
 #THE ID OF THE BLOCK OF LUCKYBLOCK 19 for sponge
 LuckyBlockId: 19
 #if you change the method it will crash..
-#20 possibility
-Chance-0:
+#21 possibility
+#
+#
+#types availables : items, blocks, money, commands, enchant
+Chance-0: 
   Type: items
   #if type items 2more options id Item amount
   idItems: 364
@@ -38,15 +47,17 @@ Chance-5:
   executor: "console"
   #executor: "console"
 Chance-6:
-  Type: items
-  #if type items 2more options id Item amount
+  Type: enchant
+  #if the type is enchant 23more options id Item amount enchantName
   idItems: 276
-  amountItems: 1
+  amountItems: 4
+  enchantName: 104
+  enchantLevel: 3
 Chance-7:
   Type: items
   #if type items 2more options id Item amount
   idItems: 46
-  amountItems: 4
+  amountItems: 5
 Chance-8:
   Type: blocks
   #if type is blocks 1option the id of the block
@@ -90,13 +101,12 @@ Chance-16:
   Type: null
   #if type is null anything to do it will do anything
 Chance-17:
-  Type: Commands
-  #if type is Command say the command to execute without the /
-  #See The Tags
-  command: "tp :nameofplayer: 0 0 0"
-  #Who will execute the command the player or the console?
-  executor: "console"
-  #executor: "console"
+  Type: enchant
+  #if the type is enchant 23more options id Item amount enchantName
+  idItems: 313
+  amountItems: 1
+  enchantName: 503
+  enchantLevel: 3
 Chance-18:
   Type: items
   #if type items 2more options id Item amount

@@ -29,21 +29,24 @@ class Events implements Listener
     	if($block->getId() == $this->caller->config->get('LuckyBlockId')){
     		#21 possibility
     		$nbchance = mt_rand(0, 20);
-    		//MN::$logger->info("Chance N°".$nbchance);
     		$obj = $cnf->get("Chance-".$nbchance);
+    		if(!isset($obj['Type'])){
+    			$player->sendPopup($this->caller->prefix."Anything winned.");
+    			$event->setDrops([Item::get(0,0,0)]);		
+    		}
 			if($obj['Type'] == "items"){
     			$item = $obj['idItems'];
     			$amount = $obj['amountItems'];
     			$event->setDrops([Item::get($item,0,$amount)]);
     			$player->sendPopup("You winned Item!!");
     			return;
-    		}elseif($obj['Type'] == "blocks"){
+    		}elseif(strtolower($obj['Type']) == "blocks"){
     			$theblock = $obj['idBlocks'];
-    			$block->getLevel()->setBlock($block->asPosition()->asVector3(),Block::get($theblock), true);
+    			$block->getLevel()->setBlock($block/*->asPosition()->asVector3()*/,Block::get($theblock), true);
     			$event->setCancelled();
     			$event->setDrops([Item::get(0,0,0)]);
     			return;
-    		}elseif($obj['Type'] == "money"){
+    		}elseif(strtolower($obj['Type']) == "money"){
     			if($this->caller->mode_eco){
     				$money = $obj["moneyToAdd"];
     				$this->caller->EconomyAPI->addMoney($player,$money);
@@ -51,12 +54,12 @@ class Events implements Listener
     				$event->setDrops([Item::get(0,0,0)]);
     				return;
     			}else{
-    				MN::$logger->warn('Usage of The type money in the case '.$nbchance.' but economy is disabled..');
+    				MN::$logger->warning('Usage of The type money in the case '.$nbchance.' but economy is disabled..');
     				$player->sendMessage($this->caller->prefix."Oups.. Error has occured.. No gain found");
     				$event->setDrops([Item::get(0,0,0)]);
     				return;
     				}
-    		}elseif($obj['Type'] ==  "Commands"){
+    		}elseif(strtolower($obj['Type']) ==  "commands"){
     			$event->setDrops([Item::get(0,0,0)]);
     			$cmd = $obj['command'];
     			$cmd = str_replace(":nameofplayer:", $player->getName(), $cmd);
@@ -67,11 +70,25 @@ class Events implements Listener
     				$this->caller->getServer()->dispatchCommand(new ConsoleCommandSender(), $cmd);
     				$player->sendPopup($this->caller->prefix."executing command..");
     			}else{
-    				MN::$logger->warn('Usage of The type command in the case '.$nbchance.' but the executor is not player or command it\'s '.$obj['executor']);
+    				MN::$logger->warning('Usage of The type command in the case '.$nbchance.' but the executor is not player or command it\'s '.$obj['executor']);
     				$player->sendMessage($this->caller->prefix."Oups.. error has occured.. No gain found for Commands");
     			}
     			return;
-    		}else{
+    		}elseif(strtolower($obj['Type']) =="enchant"){
+                if($this->caller->mode_enc && isset($obj['idItems'],$obj['amountItems'], $obj['enchantName'], $obj['enchantLevel'])){
+                    $item = $obj['idItems'];
+                    $amount = $obj['amountItems'];
+                    $item = Item::get($item,0,$amount);
+                    $enc = $obj['enchantName'];
+                    $encl = $obj['enchantLevel'];
+                    $this->caller->piggy->addEnchantment($item, $enc, $encl);
+                    $event->setDrops([$item]);
+                    $player->sendPopup($this->caller->prefix."You get an enchanted item");
+                }else{
+                    MN::$logger->warning('Usage of The type enchant in the case '.$nbchance.' but one of them is empty OR Piggy is not available');
+                    $player->sendMessage($this->caller->prefix."Oups.. error has occured.. No gain found for Enchant");
+                }
+            }else{
     			$player->sendPopup($this->caller->prefix."Anything winned.");
     			$event->setDrops([Item::get(0,0,0)]);
     		}
