@@ -26,6 +26,8 @@ class Events implements Listener
     	$block = $event->getBlock();
     	$player = $event->getPlayer();
     	$cnf = $this->caller->config;
+	#..... yeah i forget it, How idk
+	if($event->isCancelled()) return;
     	if($block->getId() == $this->caller->config->get('LuckyBlockId')){
     		#21 possibility
     		$nbchance = mt_rand(0, 20);
