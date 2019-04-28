@@ -21,15 +21,7 @@ use pocketmine\math\Vector3;
 use Palente\LuckyBlock\Main;
 
 class Events implements Listener {
-
-    public $eco;
-    public $caller;
-	public $cnf;
 	
-    public function __construct(MN $caller){
-    	$this->caller = $caller;
-    }
-
 	/**
 	 * When a player breaks a block.
 	 * @param BlockBreakEvent $event
