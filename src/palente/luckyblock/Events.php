@@ -30,7 +30,12 @@ class Events implements Listener {
     	$this->caller = $caller;
     }
 
-    public function onBreak(BlockBreakEvent $event){
+	/**
+	 * When a player breaks a block.
+	 * @param BlockBreakEvent $event
+	 * @return void
+	 */
+    public function onBreak(BlockBreakEvent $event) : void {
     	$block = $event->getBlock();
     	$player = $event->getPlayer();
 		$config = Main::getInstance()->config;

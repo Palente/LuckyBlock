@@ -15,8 +15,8 @@ use Palente\LuckyBlock\utils\Events;
 
 class Main extends PluginBase {
 
-	public static $instance;
-	public static $logger = null;
+	/** @var $main, $config and $logger instances */
+    public static $main, $config, $logger;
 
 	public $mode_eco = false;
 	public $mode_enc = false;
@@ -74,7 +74,11 @@ class Main extends PluginBase {
 		}*/
 	}
 
-	public static function getInstance(){
-		return self::$instance;
+	/**
+	 * Return instance of Main class.
+	 * @return Main
+	 */
+	public static function getInstance() : Main {
+		return self::$main;
 	}
 }
