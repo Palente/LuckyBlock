@@ -23,11 +23,6 @@ class Main extends PluginBase {
 
 	public $prefix = TX::BLUE."[".TX::AQUA."LuckyBlock".TX::BLUE."] ".TX::RESET;
 
-	public function onLoad(){
-		self::$logger = $this->getLogger();
-		self::$instance =$this;
-	}
-
 	public function onEnable(){
 		$this->getServer()->getPluginManager()->registerEvents(new Events($this), $this);
 
@@ -36,6 +31,11 @@ class Main extends PluginBase {
 		if(!file_exists($this->getDataFolder()."config.yml")){
 			$this->saveResource('config.yml');
 		}
+		
+		# Register statics:
+		self::$main = $this;
+		self::$config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
+		self::$logger = $this->getLogger();
 
 		$this->config = new Config($this->getDataFolder().'config.yml', Config::YAML);
 
@@ -81,4 +81,12 @@ class Main extends PluginBase {
 	public static function getInstance() : Main {
 		return self::$main;
 	}
+
+	/**
+     * Return instance of plugin config.
+     * @return Config
+     */
+    public static function getDefaultConfig() : Config {
+        return self::$config;
+    }
 }
