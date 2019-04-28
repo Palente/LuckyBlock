@@ -1,7 +1,9 @@
 name: LuckyBlock
-author: Palente
 main: palente\luckyblock\Main
 version: 0.8
+author:
+  - Palente
+  # Can I ? - Bluzzi 
 api: 3.0.0
 softdepend: ["EconomyAPI", "PiggyCustomEnchants"]
 
