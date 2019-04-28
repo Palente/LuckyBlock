@@ -7,7 +7,6 @@ use pocketmine\plugin\PluginBase;
 use pocketmine\Player;
 
 use pocketmine\Server;
-use pocketmine\utils\TextFormat as TX;
 
 use pocketmine\utils\Config;
 
@@ -18,13 +17,16 @@ class Main extends PluginBase {
 	/** @var $main and $config instances */
     public static $main, $config;
 
+	/** @var $economyPlugin and $mode_eco economyAPI plugin variables */
 	public $economyPlugin;
 	public $mode_eco = false;
 
+	/** @var $piggyPlugin and $mode_enc PiggyCustomEnchant plugin variables */
 	public $piggyPlugin;
 	public $mode_enc = false;
 
-	public $prefix = TX::BLUE."[".TX::AQUA."LuckyBlock".TX::BLUE."] ".TX::RESET;
+	/** @var $prefix the prefix */
+	public $prefix = "§e[§bLuckyBlock§e]§r" . " ";
 
 	/**
 	 * When the plugin is started.
