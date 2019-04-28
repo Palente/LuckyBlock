@@ -78,7 +78,7 @@ class Events implements Listener {
 						$player->sendMessage(Main::getInstance()->prefix."You winned ".$money." money! §aCongratulation!§a");
 						$event->setDrops(array(Item::get(0, 0, 0));
 					} else {
-						Main::$logger->warning("Usage of The type money in the case ".$nbchance." but economy is disabled..");
+						Main::getInstance()->getLogger()->warning("Usage of The type money in the case ".$nbchance." but economy is disabled..");
 						$player->sendMessage(Main::getInstance()->prefix."Oups.. Error has occured.. No gain found");
 						$event->setDrops(array(Item::get(0, 0, 0));
 					}
@@ -95,7 +95,7 @@ class Events implements Listener {
 						Main::getInstance()->getServer()->dispatchCommand(new ConsoleCommandSender(), $cmd);
 						$player->sendPopup(Main::getInstance()->prefix."executing command..");
 					} else {
-						Main::$logger->warning("Usage of The type command in the case ".$nbchance." but the executor is not player or command it\"s ".$loot["executor"]);
+						Main::getInstance()->getLogger()->warning("Usage of The type command in the case ".$nbchance." but the executor is not player or command it\"s ".$loot["executor"]);
 						$player->sendMessage(Main::getInstance()->prefix."Oups.. error has occured.. No gain found for Commands");
 					}
 
@@ -113,7 +113,7 @@ class Events implements Listener {
 						$event->setDrops([$item]);
 						$player->sendPopup(Main::getInstance()->prefix."You get an enchanted item");
 					} else {
-						Main::$logger->warning("Usage of The type enchant in the case ".$nbchance." but one of them is empty OR Piggy is not available");
+						Main::getInstance()->getLogger()->warning("Usage of The type enchant in the case ".$nbchance." but one of them is empty OR Piggy is not available");
 						$player->sendMessage(Main::getInstance()->prefix."Oups.. error has occured.. No gain found for Enchant");
 					}
 				break;
