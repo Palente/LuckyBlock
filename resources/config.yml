@@ -1,130 +1,49 @@
-version: 0.8
-#usage of EconomyAPI to add money set it to true if you have the plugin
-#to false if you dont have the plugin
-#IF YOU HAVE ANOTHER PLUGIN SET IT TO FALSE!
-usage_of_EconomyAPI: "true"
-#usage of PiggyCustomEnchants to give items with enchant set it to true(IF YOU HAVE THE PLUGIN)
-#to false if you dont have the plugin
-#IF YOU HAVE ANOTHER PLUGIN SET IT TO FALSE!
-#ID for enchantment
-#https://github.com/DaPigGuy/PiggyCustomEnchants/blob/master/src/DaPigGuy/PiggyCustomEnchants/CustomEnchants/CustomEnchantsIds.php
-usage_of_PiggyCustomEnchants: "false"
-#THE ID OF THE BLOCK OF LUCKYBLOCK 19 for sponge
-LuckyBlockId: 19
-#if you change the method it will crash..
-#21 possibility
-#
-#
-#types availables : items, blocks, money, commands, enchant
-Chance-0: 
-  Type: items
-  #if type items 2more options id Item amount
-  idItems: 364
-  amountItems: 30
-Chance-1:
-  Type: items
-  #if type items 2more options id Item amount
-  idItems: 264
-  amountItems: 10
-Chance-2:
-  Type: blocks
-  #if type is blocks 1option the id of the block
-  idBlocks: 41
-Chance-3:
-  Type: money
-  #if type is money 1option money to add to the player
-  #usage of economyAPI
-  moneyToAdd: 500
-Chance-4:
-  Type: null
-  #if type is null anytthing to do
-Chance-5:
-  Type: Commands
-  #if type is Command say the command to execute without the /
-  #See The Tags
-  command: "say SAY hello to :nameofplayer:"
-  #Who will execute the command the player or the console?
-  executor: "console"
-  #executor: "console"
-Chance-6:
-  Type: enchant
-  #if the type is enchant 23more options id Item amount enchantName
-  idItems: 276
-  amountItems: 4
-  enchantName: 104
-  enchantLevel: 3
-Chance-7:
-  Type: items
-  #if type items 2more options id Item amount
-  idItems: 46
-  amountItems: 5
-Chance-8:
-  Type: blocks
-  #if type is blocks 1option the id of the block
-  idBlocks: 57
-Chance-9:
-  Type: money
-  #if type is money 1option money to add to the player
-  #usage of economyAPI
-  moneyToAdd: 500
-Chance-10:
-  Type: null
-  #if type is null anything to do it will do anything
-Chance-11:
-  Type: Commands
-  #if type is Command say the command to execute without the /
-  #See The Tags
-  command: "say What's up :nameofplayer:?"
-  #Who will execute the command the player or the console?
-  executor: "console"
-  #executor: "console"
-Chance-12:
-  Type: items
-  #if type items 2more options id Item amount
-  idItems: 48
-  amountItems: 30
-Chance-13:
-  Type: items
-  #if type items 2more options id Item amount
-  idItems: 19
-  amountItems: 4
-Chance-14:
-  Type: blocks
-  #if type is blocks 1option the id of the block
-  idBlocks: 130
-Chance-15:
-  Type: money
-  #if type is money 1option money to add to the player
-  #usage of economyAPI
-  moneyToAdd: 500
-Chance-16:
-  Type: null
-  #if type is null anything to do it will do anything
-Chance-17:
-  Type: enchant
-  #if the type is enchant 23more options id Item amount enchantName
-  idItems: 313
-  amountItems: 1
-  enchantName: 503
-  enchantLevel: 3
-Chance-18:
-  Type: items
-  #if type items 2more options id Item amount
-  idItems: 5
-  amountItems: 30
-Chance-19:
-  Type: items
-  #if type items 2more options id Item amount
-  idItems: 17
-  amountItems: 20
-Chance-20:
-  Type: blocks
-  #if type is blocks 1option the id of the block
-  idBlocks: 45
+# Using the EconomyAPI and PiggyCustomEnchants plugins if you used them put them on true instead of false !
+  # EconomyAPI: https://poggit.pmmp.io/p/EconomyAPI
+  # PiggyCustomEnchants: https://poggit.pmmp.io/p/PiggyCustomEnchants
+usage-of-EconomyAPI: false
+usage-of-PiggyCustomEnchants: false
 
-#TAGS
-#TAGS FOR COMMANDS
-# :nameofplayer: -> the name of the player
-# 
-#
-#COMMANDS WILL BE UPDATED IN FUTURE UPDATE
+# Item of the LuckyBlock (default 19: sponge):
+  # id:meta
+block: "19:0"
+
+# Useful tips before starting the configuration:
+  # You can use {playerName} tag for add the player name to a command, message...
+  # Item id/meta list: https://bit.ly/2J0l7QU
+  # Basic enchantment name/id list: https://bit.ly/2GJXaun
+  # PiggyCustomEnchants enchantment name/id list: https://bit.ly/2GVQSYX
+
+# Configuration of the loots (there are currently 5 different possibilities which will be described below):
+loot:
+  # items -> give a item to the player (that supports PiggyCustomEnchants), exemples:
+    # - items: ["id:meta-count", "id-count", "id"]
+    # - items: ["id-count-itemName"]
+    # - items: ["id-count-DEFAULT-enchantName-enchantLevel"]
+  - items: ["276-1-DEFAULT-sharpness-5"]
+  - items: ["310", "311", "312", "313"]
+  - items: ["322-32"]
+  - items: ["278-1-Pickaxe of {playerName}"]
+  # blocks -> replace the LuckyBlock by another block, exemples:
+    # - block: "id:meta"
+  - block: 57
+  - block: 41
+  - block: 10
+  - block: 30
+  # commands-player -> execute commands from the player:
+    # - commands-player: [me "Bluzzi is too strong..."]
+    # - commands-player: ["help 1", "help 2"]
+  - commands-player: ["help 1", "help 2"]
+  - commands-player: ["me I broke a LuckyBlock !!"]
+  # commands-server -> execute commands from the server:
+    # - commands-server: ["say {playerName} broke a LuckyBlock."]
+  - commands-server: ["say {playerName} broke a LuckyBlock."]
+  - commands-server: ["effect {playerName} jump 60 2", "effect {playerName} speed 60 2"]
+  # money -> give money to a player (be careful, this feature requires the activation of the EconomyAPI plugin):
+    # - money: count
+  - money: 5000
+  - money: 250
+  - money: 1000
+
+# The version of the plugin, please don't touch it !
+version: 0.8
