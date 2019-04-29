@@ -11,11 +11,12 @@ You can download the latest version of the plugin in the update tab of this repo
 ## Future update
 - [x] PiggyCustomEnchants support issue [#1](https://github.com/Palente/LuckyBlock/issues/1)
 - [x] Plugin's rewrite
-- [x] BETA: Automatic configuration update system
+- [x] Automatic configuration update system
 - [x] Config's rewrite
-- [ ] The possibility to execute multiple commands
-- [ ] The possibility of dropping more than one item
+- [x] The possibility to execute multiple commands
+- [x] The possibility of dropping more than one item
 - [ ] Custom all message and prefix
+- [ ] Automatic remove of invalid loot type
 
 ## Error or suggestion
 You can open a issue in this repositorie.
