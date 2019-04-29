@@ -1,6 +1,6 @@
 <?php
 
-namespace Palente\LuckyBlock;
+namespace palente\luckyblock;
 
 use pocketmine\plugin\PluginBase;
 
@@ -10,7 +10,7 @@ use pocketmine\Server;
 
 use pocketmine\utils\Config;
 
-use Palente\LuckyBlock\utils\Events;
+use palente\luckyblock\Events;
 
 class Main extends PluginBase {
 
