@@ -1,6 +1,6 @@
 <?php
 
-namespace Palente\LuckyBlock\utils;
+namespace Palente\luckyblock;
 
 use pocketmine\event\Listener;
 use pocketmine\event\block\BlockBreakEvent;
