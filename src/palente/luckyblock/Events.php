@@ -28,98 +28,97 @@ class Events implements Listener {
      * @return void
      */
     public function onBreak(BlockBreakEvent $event) : void {
+        $luckyblock = Item::fromString(Main::getDefaultConfig()->get("block"));
         $player = $event->getPlayer();
         $block = $event->getBlock();
         
         if($event->isCancelled()) return;
 
-        //TODO: document this:
-        //TODO: add custom messages:
+        if($block->getId() === $luckyblock->getId() and $block->getDamage() === $luckyblock->getDamage()){
+            $this->brokeLuckyBlock($player, $block);
+        }
+    }
 
-        if($block->getId() == Main::getDefaultConfig()->get("LuckyBlockId")){
-            $nbchance = mt_rand(0, 20);
-            //TODO: addition of a chance counter, this must be done automatically by the plugin !
-            $loot = Main::getDefaultConfig()->get("Chance-" . $nbchance);
+    /**
+     * When a player break the LuckyBlock.
+     * @param Player $player
+     * @param Block $block
+     * @return void
+     */
+    private function brokeLuckyBlock(Player $player, Block $block) : void {
+        $loot = array_shift(shuffle(Main::getDefaultConfig()->get("loot")));
+        $type = array_keys($loot)[0];
 
-            if(empty($loot["Type"])){
-                $player->sendPopup(Main::getInstance()->prefix . "Anything winned.");
-                $event->setDrops(array(Item::get(0, 0, 0)));
+        if(in_array($type, array("block", "money", "commands-player", "commands-server"))){
+            $event->setDrops(array(Item::get(0, 0, 0)));
+        }
 
-                return;
-            }
+        switch($type){
+            case "items":
+                foreach($loot["items"] as $item){
+                    if(strpos($item, "-")){
+                        $array = explode("-", $item);
 
-            if(in_array($loot["Type"], array("blocks", "money", "commands"))){
-                $event->setDrops(array(Item::get(0, 0, 0)));
-            }
+                        $item = Item::fromString($array[0]);
 
-            switch($loot["Type"]){
-                case "items":
-                    $item = $loot["idItems"];
-                    $amount = $loot["amountItems"];
+                        if(isset($array[1])) $item->setCount($array[1]);
+                        if(isset($array[2]) and $array[2] != "DEFAULT") $item->setCustomName($array[2]);
 
-                    $event->setDrops(array(Item::get($item, 0, $amount)));
-                    $player->sendPopup("You winned Item !!");
-                break;
-
-                case "blocks":
-                    $theblock = $loot["idBlocks"];
-
-                    $block->getLevel()->setBlock($block->asPosition()->asVector3(), Block::get($theblock), true);
-                break;
-
-                case "commands":
-                    $cmd = $loot["command"];
-                    $cmd = str_replace(":nameofplayer:", $player->getName(), $cmd);
-                    
-                    switch($loot["executor"]){
-                        case "player":
-                            Main::getInstance()->getServer()->dispatchCommand($player, $cmd);
-                            $player->sendPopup(Main::getInstance()->prefix."executing command..");
-                        break;
-
-                        case "executor":
-                            Main::getInstance()->getServer()->dispatchCommand(new ConsoleCommandSender(), $cmd);
-                            $player->sendPopup(Main::getInstance()->prefix . "executing command..");
-                        break;
-
-                        default:
-                            Main::getInstance()->getLogger()->warning("Usage of The type command in the case " . $nbchance . " but the executor is not player or command it\"s " . $loot["executor"]);
-                            $player->sendMessage(Main::getInstance()->prefix . "Oups.. error has occured.. No gain found for Commands");
-                        break;
-                    }
-                break;
-
-                case "enchant":
-                    if(Main::getInstance()->mode_enc and isset($loot["idItems"], $loot["amountItems"], $loot["enchantName"], $loot["enchantLevel"])){
-                        $item = $loot["idItems"];
-                        $amount = $loot["amountItems"];
-                        $enchant = $loot["enchantName"];
-                        $enchantLevel = $loot["enchantLevel"];
-
-                        $item = Item::get($item, 0, $amount);
-
-                        Main::getInstance()->piggyPlugin->addEnchantment($item, $enchant, $enchantLevel);
-
-                        $player->sendPopup(Main::getInstance()->prefix."You get an enchanted item.");
-                        $event->setDrops(array($item));
+                        if(isset($array[3])){
+                            if(isset($array[4])){
+                                Main::getInstance()->piggyPlugin->addEnchantment($item, $array[3], $array[4]);
+                            } else {
+                                Main::getInstance()->piggyPlugin->addEnchantment($item, $array[3]);
+                            }
+                        }
                     } else {
-                        Main::getInstance()->getLogger()->warning("Usage of The type enchant in the case " . $nbchance . " but one of them is empty OR Piggy is not available");
-                        $player->sendMessage(Main::getInstance()->prefix . "Oups.. error has occured.. No gain found for Enchant");
+                        $item = Item::fromString($item);
                     }
-                break;
+                }
 
-                case "money":
-                    if(Main::getInstance()->mode_eco){
-                        $money = $loot["moneyToAdd"];
+                $event->setDrops(array($item));
+            break;
 
-                        Main::getInstance()->economyPlugin->addMoney($player, $money);
-                        $player->sendMessage(Main::getInstance()->prefix."You winned " . $money . " money ! §aCongratulation !");
-                    } else {
-                        Main::getInstance()->getLogger()->warning("Usage of The type money in the case " . $nbchance . " but economy is disabled..");
-                        $player->sendMessage(Main::getInstance()->prefix."Oups.. Error has occured.. No gain found");
-                    }
-                break;
-            }
+            case "block":
+                $blockId = $loot["block"];
+
+                //Is good ?
+                $block->getLevel()->setBlock($block->asPosition()->asVector3(), Block::fromString($blockId));
+            break;
+
+            case "commands-player":
+                foreach($loot["commands-player"] as $cmd){
+                    $cmd = str_replace("{playerName}", $player->getName(), $cmd);
+
+                    //TODO: add custom message for the player.
+                    Main::getInstance()->getServer()->dispatchCommand($player, $cmd);
+                }
+            break;
+
+            case "commands-server":
+                foreach($loot["commands-server"] as $cmd){
+                    $cmd = str_replace("{playerName}", $player->getName(), $cmd);
+
+                    //TODO: add custom message for the player.
+                    Main::getInstance()->getServer()->dispatchCommand(new ConsoleCommandSender(), $cmd);
+                }
+            break;
+
+            case "money":
+                if(isset(Main::getInstance()->economyPlugin)){
+                    $moneyCount = $loot["money"];
+
+                    $player->sendMessage(Main::PREFIX . "You winned " . $moneyCount . Main::getInstance()->economyPlugin->getMonetaryUnit() . ", congratulation !");
+                    Main::getInstance()->economyPlugin->addMoney($player, $moneyCount);
+                } else {
+                    $player->sendMessage(Main::PREFIX . "An error has occurred, contact an administrator.");
+                    Main::getInstance()->getLogger()->warning("Error, you used a money loot, this is not possible because you have disabled the use of EconomyAPI.");
+                }
+            break;
+
+            default:
+                Main::getInstance()->getLogger()->warning("Error, you used a type of loot that does not exist. Please change this in the configuration.");
+            break;
         }
     }
 }
