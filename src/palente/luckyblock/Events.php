@@ -12,13 +12,10 @@ use pocketmine\Server;
 use pocketmine\item\Item;
 
 use pocketmine\block\Block;
-use pocketmine\block\BlockFactory;
 
 use pocketmine\command\ConsoleCommandSender;
 
-use pocketmine\math\Vector3;
-
-use Palente\LuckyBlock\Main;
+use palente\luckyblock\Main;
 
 class Events implements Listener {
 
@@ -35,7 +32,7 @@ class Events implements Listener {
         if($event->isCancelled()) return;
 
         if($block->getId() === $luckyblock->getId() and $block->getDamage() === $luckyblock->getDamage()){
-            $this->brokeLuckyBlock($player, $block);
+            $event->setDrops($this->brokeLuckyBlock($player, $block));
         }
     }
 
@@ -43,18 +40,20 @@ class Events implements Listener {
      * When a player break the LuckyBlock.
      * @param Player $player
      * @param Block $block
-     * @return void
+     * @return Item[]
      */
-    private function brokeLuckyBlock(Player $player, Block $block) : void {
-        $loot = array_shift(shuffle(Main::getDefaultConfig()->get("loot")));
-        $type = array_keys($loot)[0];
+    private function brokeLuckyBlock(Player $player, Block $block) : array {
+        $loot = Main::getDefaultConfig()->get("loot");
 
-        if(in_array($type, array("block", "money", "commands-player", "commands-server"))){
-            $event->setDrops(array(Item::get(0, 0, 0)));
-        }
+        shuffle($loot);
+
+        $loot = array_shift($loot);
+        $type = array_keys($loot)[0];
 
         switch($type){
             case "items":
+                $items = array();
+
                 foreach($loot["items"] as $item){
                     if(strpos($item, "-")){
                         $array = explode("-", $item);
@@ -62,28 +61,37 @@ class Events implements Listener {
                         $item = Item::fromString($array[0]);
 
                         if(isset($array[1])) $item->setCount($array[1]);
-                        if(isset($array[2]) and $array[2] != "DEFAULT") $item->setCustomName($array[2]);
+                        if(isset($array[2]) and $array[2] != "DEFAULT") $item->setCustomName(str_replace("{playerName}", $player->getName(), $array[2]));
 
                         if(isset($array[3])){
+                            //TODO: fix this:
                             if(isset($array[4])){
-                                Main::getInstance()->piggyPlugin->addEnchantment($item, $array[3], $array[4]);
+                                //Main::getInstance()->piggyPlugin->addEnchantment($item, $array[3], $array[4]);
                             } else {
-                                Main::getInstance()->piggyPlugin->addEnchantment($item, $array[3]);
+                                //Main::getInstance()->piggyPlugin->addEnchantment($item, $array[3]);
                             }
                         }
                     } else {
                         $item = Item::fromString($item);
                     }
+
+                    $items[] = $item;
                 }
 
-                $event->setDrops(array($item));
+                return $items;
             break;
 
             case "block":
                 $blockId = $loot["block"];
 
-                //Is good ?
-                $block->getLevel()->setBlock($block->asPosition()->asVector3(), Block::fromString($blockId));
+                if(strpos($blockId, ":")){
+                    $array = explode(":", $blockId);
+                    $blockInstance = Block::get($array[0], $array[1]);
+                } else {
+                    $blockInstance = Block::get($blockId);
+                }
+
+                $block->getLevel()->setBlock($block->asPosition()->asVector3(), $blockInstance);
             break;
 
             case "commands-player":
@@ -119,6 +127,10 @@ class Events implements Listener {
             default:
                 Main::getInstance()->getLogger()->warning("Error, you used a type of loot that does not exist. Please change this in the configuration.");
             break;
+        }
+
+        if(in_array($type, array("block", "money", "commands-player", "commands-server"))){
+            return array(Item::get(0, 0, 0));
         }
     }
 }
