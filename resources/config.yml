@@ -9,14 +9,14 @@ usage-of-PiggyCustomEnchants: false
 block: "19:0"
 
 # Useful tips before starting the configuration:
-  # You can use {playerName} tag for add the player name to a command, message...
+  # You can use {playerName} tag to add the player name to a command, message...
   # Item id/meta list: https://bit.ly/2J0l7QU
   # Basic enchantment name/id list: https://bit.ly/2GJXaun
   # PiggyCustomEnchants enchantment name/id list: https://bit.ly/2GVQSYX
 
 # Configuration of the loots (there are currently 5 different possibilities which will be described below):
 loot:
-  # items -> give a item to the player (that supports PiggyCustomEnchants), exemples:
+  # items -> give a item to the player (that supports PiggyCustomEnchants), examples:
     # - items: ["id:meta-count", "id-count", "id"]
     # - items: ["id-count-itemName"]
     # - items: ["id-count-DEFAULT-enchantName-enchantLevel"]
@@ -24,26 +24,26 @@ loot:
   - items: ["310", "311", "312", "313"]
   - items: ["322-32"]
   - items: ["278-1-Pickaxe of {playerName}"]
-  # blocks -> replace the LuckyBlock by another block, exemples:
+  # blocks -> replace the LuckyBlock by another block, examples:
     # - block: "id:meta"
   - block: 57
   - block: 41
   - block: 10
   - block: 30
-  # commands-player -> execute commands from the player:
+  # commands-player -> execute commands from the player, examples:
     # - commands-player: [me "Bluzzi is too strong..."]
     # - commands-player: ["help 1", "help 2"]
   - commands-player: ["help 1", "help 2"]
   - commands-player: ["me I broke a LuckyBlock !!"]
-  # commands-server -> execute commands from the server:
+  # commands-server -> execute commands from the server, examples:
     # - commands-server: ["say {playerName} broke a LuckyBlock."]
   - commands-server: ["say {playerName} broke a LuckyBlock."]
   - commands-server: ["effect {playerName} jump 60 2", "effect {playerName} speed 60 2"]
-  # money -> give money to a player (be careful, this feature requires the activation of the EconomyAPI plugin):
+  # money -> give money to a player (be careful, this feature requires the activation of the EconomyAPI plugin), examples:
     # - money: count
   - money: 5000
   - money: 250
   - money: 1000
 
-# The version of the plugin, please don't touch it !
+# Plugin's version, please don't touch it !
 version: 0.8
