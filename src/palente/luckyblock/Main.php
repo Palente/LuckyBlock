@@ -1,6 +1,6 @@
 <?php
 
-namespace Palente\LuckyBlock;
+namespace palente\luckyblock;
 
 use pocketmine\plugin\PluginBase;
 
