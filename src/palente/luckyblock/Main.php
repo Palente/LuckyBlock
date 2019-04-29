@@ -19,14 +19,12 @@ class Main extends PluginBase {
 
 	/** @var $economyPlugin and $mode_eco economyAPI plugin variables */
 	public $economyPlugin;
-	public $mode_eco = false;
 
 	/** @var $piggyPlugin and $mode_enc PiggyCustomEnchant plugin variables */
 	public $piggyPlugin;
-	public $mode_enc = false;
 
 	/** @var $prefix the prefix */
-	public $prefix = "§e[§bLuckyBlock§e]§r" . " ";
+	const PREFIX = "§e[§bLuckyBlock§e]§r" . " ";
 
 	/**
 	 * When the plugin is started.
@@ -39,10 +37,10 @@ class Main extends PluginBase {
 		if(file_exists($this->getDataFolder() . "config.yml")){
 			$config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
 
-            if($config->get("version") !== $this->getDescription()->getVersion() or !$config->exists("version")){
+            if($config->get("version") != $this->getDescription()->getVersion() or !$config->exists("version")){
 				$this->getLogger()->warning("Critical changes have been made in the new version of the plugin and it seem that your config.yml is a older config.");
 				$this->getLogger()->warning("Your config has been updated, be careful to check the content change !");
-				$this->getLogger()->info("You can find your old config in OldConfig.yml file.");
+				$this->getLogger()->warning("You can find your old config in OldConfig.yml file.");
 
 				rename($this->getDataFolder() . "config.yml", $this->getDataFolder() . "oldConfig.yml");
 				$this->saveResource("config.yml", true);
@@ -60,7 +58,6 @@ class Main extends PluginBase {
 		if(self::getDefaultConfig()->get("usage_of_EconomyAPI") == "true"){
 			if($this->getServer()->getPluginManager()->getPlugin("EconomyAPI")){
 				$this->economyPlugin = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
-				$this->mode_eco = true;
 			} else {
 				$this->getLogger()->error("You have enabled the usage of the plugin EconomyAPI but the plugin is not found.");
 			}
@@ -70,7 +67,6 @@ class Main extends PluginBase {
 		if(self::getDefaultConfig()->get("usage_of_PiggyCustomEnchants") == "true"){
 			if($this->getServer()->getPluginManager()->getPlugin("PiggyCustomEnchants")){
 				$this->piggyPlugin = $this->getServer()->getPluginManager()->getPlugin("PiggyCustomEnchants");
-				$this->mode_enc = true;
 			} else {
 				$this->getLogger()->error("You have enabled the usage of the plugin PiggyCustomEnchants but the plugin is not found.");
 			}
