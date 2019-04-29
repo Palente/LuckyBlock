@@ -37,18 +37,25 @@ class Main extends PluginBase {
 
 		# Creating the configuration if it is not done and updating it:
 		if(file_exists($this->getDataFolder() . "config.yml")){
-            if(self::getDefaultConfig()->get("version") !== $this->getVersion()){
-				$this->getLogger()->warning("Critical changes have been made in the new version of the plugin and it seem that your config.yml is a older config. Please delete your config.yml and restart your server.");
-				//TODO: ideas for the method used to update the configuration ?
+			$config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
+
+            if($config->get("version") !== $this->getDescription()->getVersion() or !$config->exists("version")){
+				$this->getLogger()->warning("Critical changes have been made in the new version of the plugin and it seem that your config.yml is a older config.");
+				$this->getLogger()->warning("Your config has been updated, be careful to check the content change !");
+				$this->getLogger()->info("You can find your old config in OldConfig.yml file.");
+
+				rename($this->getDataFolder() . "config.yml", $this->getDataFolder() . "oldConfig.yml");
+				$this->saveResource("config.yml", true);
 			}
 		} else {
+			$this->getLogger()->info("The LuckyBlock config as been created !");
 			$this->saveResource("config.yml");
 		}
-		
+
 		# Register statics:
 		self::$main = $this;
 		self::$config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
-
+		
 		# Enabling the use of the EconomyAPI plugin:
 		if(self::getDefaultConfig()->get("usage_of_EconomyAPI") == "true"){
 			if($this->getServer()->getPluginManager()->getPlugin("EconomyAPI")){
