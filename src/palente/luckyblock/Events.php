@@ -64,11 +64,10 @@ class Events implements Listener {
                         if(isset($array[2]) and $array[2] != "DEFAULT") $item->setCustomName(str_replace("{playerName}", $player->getName(), $array[2]));
 
                         if(isset($array[3])){
-                            //TODO: fix this:
                             if(isset($array[4])){
-                                //Main::getInstance()->piggyPlugin->addEnchantment($item, $array[3], $array[4]);
+                                Main::getApi()->addEnchantment($item, $array[3], $array[4]);
                             } else {
-                                //Main::getInstance()->piggyPlugin->addEnchantment($item, $array[3]);
+                                Main::getApi()->addEnchantment($item, $array[3]);
                             }
                         }
                     } else {
