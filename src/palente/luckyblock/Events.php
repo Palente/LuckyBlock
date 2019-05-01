@@ -23,6 +23,8 @@ class Events implements Listener {
      * When a player breaks a block.
      * @param BlockBreakEvent $event
      * @return void
+     * 
+     * @priority LOW
      */
     public function onBreak(BlockBreakEvent $event) : void {
         $luckyblock = Item::fromString(Main::getDefaultConfig()->get("block"));
