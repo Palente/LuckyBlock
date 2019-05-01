@@ -9,7 +9,7 @@ use pocketmine\item\enchantment\EnchantmentInstance;
 class Api {
     
     /**
-     * Add an enchantment on an Item.
+     * Add an enchantment on an Item (work with PiggyCustomEnchants).
      * @param Item $item
      * @param string $enchantName
      * @param int $enchantLevel
@@ -20,10 +20,12 @@ class Api {
             Main::getInstance()->piggyPlugin->addEnchantment($item, $enchantName, $enchantLevel);
         } else {
             if(is_numeric($enchantName)){
-                $item->addEnchantment(new EnchantmentInstance(Enchantment::getEnchantment($enchantName), $enchantLevel));
+                $enchant = Enchantment::getEnchantment($enchantName);
             } else {
-                $item->addEnchantment(new EnchantmentInstance(Enchantment::getEnchantmentByName($enchantName), $enchantLevel));
+                $enchant = Enchantment::getEnchantmentByName($enchantName);
             }
+
+            if(isset($enchant)) $item->addEnchantment(new EnchantmentInstance($enchant, $enchantLevel));
         }
     }
 }
