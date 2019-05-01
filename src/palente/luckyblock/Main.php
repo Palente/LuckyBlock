@@ -16,7 +16,7 @@ use palente\luckyblock\Api;
 class Main extends PluginBase {
 
 	/** @var $main, $api and $config instances */
-    private static $main, $api, $config;
+	private static $main, $api, $config;
 
 	/** @var $economyPlugin and $mode_eco economyAPI plugin variables */
 	public $economyPlugin;
@@ -38,7 +38,7 @@ class Main extends PluginBase {
 		if(file_exists($this->getDataFolder() . "config.yml")){
 			$config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
 
-            if($config->get("version") != $this->getDescription()->getVersion() or !$config->exists("version")){
+			if($config->get("version") != $this->getDescription()->getVersion() or !$config->exists("version")){
 				$this->getLogger()->warning("Critical changes have been made in the new version of the plugin and it seem that your config.yml is a older config.");
 				$this->getLogger()->warning("Your config has been updated, be careful to check the content change !");
 				$this->getLogger()->warning("You can find your old config in OldConfig.yml file.");
@@ -55,7 +55,7 @@ class Main extends PluginBase {
 		self::$main = $this;
 		self::$api = new Api();
 		self::$config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
-		
+
 		# Enabling the use of the EconomyAPI plugin:
 		if(self::getDefaultConfig()->get("usage_of_EconomyAPI") == "true"){
 			if($this->getServer()->getPluginManager()->getPlugin("EconomyAPI")){
@@ -92,10 +92,10 @@ class Main extends PluginBase {
 	}
 
 	/**
-     * Return instance of plugin config.
-     * @return Config
-     */
-    public static function getDefaultConfig() : Config {
-        return self::$config;
+	 * Return instance of plugin config.
+	 * @return Config
+	 */
+	public static function getDefaultConfig() : Config {
+		return self::$config;
 	}
 }
