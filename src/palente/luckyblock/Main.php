@@ -11,11 +11,12 @@ use pocketmine\Server;
 use pocketmine\utils\Config;
 
 use palente\luckyblock\Events;
+use palente\luckyblock\Api;
 
 class Main extends PluginBase {
 
-	/** @var $main and $config instances */
-    public static $main, $config;
+	/** @var $main, $api and $config instances */
+    public static $main, $api, $config;
 
 	/** @var $economyPlugin and $mode_eco economyAPI plugin variables */
 	public $economyPlugin;
@@ -52,6 +53,7 @@ class Main extends PluginBase {
 
 		# Register statics:
 		self::$main = $this;
+		self::$api = new Api();
 		self::$config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
 		
 		# Enabling the use of the EconomyAPI plugin:
@@ -82,10 +84,18 @@ class Main extends PluginBase {
 	}
 
 	/**
+	 * Return instance of Api class.
+	 * @return Api
+	 */
+	public static function getApi() : Api {
+		return self::$api;
+	}
+
+	/**
      * Return instance of plugin config.
      * @return Config
      */
     public static function getDefaultConfig() : Config {
         return self::$config;
-    }
+	}
 }
