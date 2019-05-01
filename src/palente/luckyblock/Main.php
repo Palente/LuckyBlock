@@ -16,7 +16,7 @@ use palente\luckyblock\Api;
 class Main extends PluginBase {
 
 	/** @var $main, $api and $config instances */
-    public static $main, $api, $config;
+    private static $main, $api, $config;
 
 	/** @var $economyPlugin and $mode_eco economyAPI plugin variables */
 	public $economyPlugin;
