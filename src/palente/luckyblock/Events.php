@@ -81,6 +81,9 @@ class Events implements Listener {
             break;
 
             case "block":
+                Main::getInstance()->warning("The use of block type is buggy...");
+                var_dump($player->getLevel(), $block->getLevel()); //Wtf this return a Level instance null...
+
                 $blockId = $loot["block"];
 
                 if(strpos($blockId, ":")){
@@ -90,7 +93,7 @@ class Events implements Listener {
                     $blockInstance = Block::get($blockId);
                 }
 
-                $block->getLevel()->setBlock($block->asPosition()->asVector3(), $blockInstance);
+                $block->getLevel()->setBlock($block->asVector3(), $blockInstance);
             break;
 
             case "commands-player":
