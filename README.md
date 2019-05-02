@@ -6,17 +6,18 @@
 It allows to define a block that will have various actions when broken as: custom drop (compatible with the enchantment of [PiggyCustomEnchants](https://poggit.pmmp.io/p/PiggyCustomEnchants)), given money (depends on [EconomyAPI](https://poggit.pmmp.io/p/EconomyAPI)), command execution from the player or server, replaced the broken block by another block.
 
 ## Installation
-You can download the latest version of the plugin in the update tab of this repository, or via the [Poggit](https://poggit.pmmp.io/p/LuckyBlock) website.
+You can download the latest version of the plugin in the [releases](https://github.com/Palente/LuckyBlock/releases) tab of this repository, or via the [Poggit](https://poggit.pmmp.io/p/LuckyBlock) website.
 
-## Future update
-- [x] PiggyCustomEnchants support issue [#1](https://github.com/Palente/LuckyBlock/issues/1)
-- [x] Plugin's rewrite
-- [x] Automatic configuration update system
-- [x] Config's rewrite
-- [x] The possibility to execute multiple commands
-- [x] The possibility of dropping more than one item
-- [ ] Custom all message and prefix
-- [ ] Automatic remove of invalid loot type
+## Updates
+### Releases
+You can find all official update in the tab [releases](https://github.com/Palente/LuckyBlock/releases), here are the last releases:<br>
+- [LuckyBlock 1.0](https://github.com/Palente/LuckyBlock/releases/tag/1.0)
+### Future updates
+- [ ] Custom all message and prefix.
+- [ ] Automatic remove of invalid loot type.
+- [ ] Add effect loot type.
+- [ ] Create cool particle effect when the LuckyBlock is broken.
+- [ ] Notification on the console on plugin release.
 
 ## Error or suggestion
 You can open a issue in this repositorie.
