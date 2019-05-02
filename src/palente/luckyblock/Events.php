@@ -15,6 +15,8 @@ use pocketmine\block\Block;
 
 use pocketmine\command\ConsoleCommandSender;
 
+use pocketmine\scheduler\Task;
+
 use palente\luckyblock\Main;
 
 class Events implements Listener {
@@ -83,9 +85,6 @@ class Events implements Listener {
             break;
 
             case "block":
-                Main::getInstance()->warning("The use of block type is buggy...");
-                var_dump($player->getLevel(), $block->getLevel()); //Wtf this return a Level instance null...
-
                 $blockId = $loot["block"];
 
                 if(strpos($blockId, ":")){
@@ -94,8 +93,20 @@ class Events implements Listener {
                 } else {
                     $blockInstance = Block::get($blockId);
                 }
+                
+                Main::getInstance()->getScheduler()->scheduleDelayedTask(new class($block, $blockInstance) extends Task {
+                    public $block;
+                    public $blockInstance;
 
-                $block->getLevel()->setBlock($block->asVector3(), $blockInstance);
+                    public function __construct($block, $blockInstance){
+                        $this->block = $block;
+                        $this->blockInstance = $blockInstance;
+                    }
+
+                    public function onRun($tick){
+                        $this->block->getLevel()->setBlock($this->block->asVector3(), $this->blockInstance);
+                    }
+                }, 1);
             break;
 
             case "commands-player":
