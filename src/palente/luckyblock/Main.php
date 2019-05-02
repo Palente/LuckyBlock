@@ -41,7 +41,7 @@ class Main extends PluginBase {
 			if($config->get("version") != $this->getDescription()->getVersion() or !$config->exists("version")){
 				$this->getLogger()->warning("Critical changes have been made in the new version of the plugin and it seem that your config.yml is a older config.");
 				$this->getLogger()->warning("Your config has been updated, be careful to check the content change !");
-				$this->getLogger()->warning("You can find your old config in OldConfig.yml file.");
+				$this->getLogger()->warning("You can find your old config in oldConfig.yml file.");
 
 				rename($this->getDataFolder() . "config.yml", $this->getDataFolder() . "oldConfig.yml");
 				$this->saveResource("config.yml", true);
