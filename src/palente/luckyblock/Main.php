@@ -10,7 +10,9 @@ use pocketmine\Server;
 
 use pocketmine\utils\Config;
 
-use palente\luckyblock\Events;
+use palente\luckyblock\events\BlockBreak;
+use palente\luckyblock\events\BlockPlace;
+
 use palente\luckyblock\Api;
 
 class Main extends PluginBase {
@@ -29,10 +31,11 @@ class Main extends PluginBase {
 
 	/**
 	 * When the plugin is started.
+	 * @return void
 	 */
-	public function onEnable(){
-		# Register events class:
-		$this->getServer()->getPluginManager()->registerEvents(new Events(), $this);
+	public function onEnable() : void {
+		# Register all plugin's events:
+		$this->registerEvents();
 
 		# Creating the configuration if it is not done and updating it:
 		if(file_exists($this->getDataFolder() . "config.yml")){
@@ -72,6 +75,18 @@ class Main extends PluginBase {
 			} else {
 				$this->getLogger()->error("You have enabled the usage of the plugin PiggyCustomEnchants but the plugin is not found.");
 			}
+		}
+	}
+
+	/**
+	 * Register all plugin's events.
+	 * @return void
+	 */
+	public function registerEvents() : void {
+		$events = array(new BlockBreak(), new BlockPlace());
+
+		foreach($events as $event){
+			$this->getServer()->getPluginManager()->registerEvents($event, $this);
 		}
 	}
 

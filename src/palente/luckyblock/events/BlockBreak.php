@@ -1,6 +1,6 @@
 <?php
 
-namespace palente\luckyblock;
+namespace palente\luckyblock\events;
 
 use pocketmine\event\Listener;
 use pocketmine\event\block\BlockBreakEvent;
@@ -15,11 +15,10 @@ use pocketmine\block\Block;
 
 use pocketmine\command\ConsoleCommandSender;
 
-use pocketmine\scheduler\Task;
-
 use palente\luckyblock\Main;
+use palente\luckyblock\SetBlock;
 
-class Events implements Listener {
+class BlockBreak implements Listener {
 
     /**
      * When a player breaks a block.
@@ -94,19 +93,7 @@ class Events implements Listener {
                     $blockInstance = Block::get($blockId);
                 }
                 
-                Main::getInstance()->getScheduler()->scheduleDelayedTask(new class($block, $blockInstance) extends Task {
-                    public $block;
-                    public $blockInstance;
-
-                    public function __construct($block, $blockInstance){
-                        $this->block = $block;
-                        $this->blockInstance = $blockInstance;
-                    }
-
-                    public function onRun($tick){
-                        $this->block->getLevel()->setBlock($this->block->asVector3(), $this->blockInstance);
-                    }
-                }, 1);
+                Main::getInstance()->getScheduler()->scheduleDelayedTask(new SetBlock($block->getLevel(), $block->asVector3(), $blockInstance), 1);
             break;
 
             case "commands-player":
