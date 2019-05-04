@@ -57,7 +57,7 @@ class Main extends PluginBase {
 		self::$config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
 
 		# Enabling the use of the EconomyAPI plugin:
-		if(self::getDefaultConfig()->get("usage_of_EconomyAPI") == "true"){
+		if(self::getDefaultConfig()->get("usage-of-EconomyAPI") == "true"){
 			if($this->getServer()->getPluginManager()->getPlugin("EconomyAPI")){
 				$this->economyPlugin = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
 			} else {
@@ -66,7 +66,7 @@ class Main extends PluginBase {
 		}
 
 		# Enabling the use of the PiggyCustomEnchant plugin:
-		if(self::getDefaultConfig()->get("usage_of_PiggyCustomEnchants") == "true"){
+		if(self::getDefaultConfig()->get("usage-of-PiggyCustomEnchants") == "true"){
 			if($this->getServer()->getPluginManager()->getPlugin("PiggyCustomEnchants")){
 				$this->piggyPlugin = $this->getServer()->getPluginManager()->getPlugin("PiggyCustomEnchants");
 			} else {
