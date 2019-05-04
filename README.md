@@ -23,7 +23,6 @@ You can find all official update in the tab [releases](https://github.com/Palent
 You can open a issue in this repositorie.
 
 ## Credit
-Plugin icon: [Minecraft Gamepedia](https://minecraft.gamepedia.com/Mods/Lucky_Block)<br>
 Developers:
 - Bluzzi [GitHub](https://github.com/Bluzzi), [Twitter](https://twitter.com/Bluzzi_)
 - Palente [GitHub](https://github.com/Palente), [Twitter](https://twitter.com/Adel_Palente)
