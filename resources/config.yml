@@ -46,4 +46,4 @@ loot:
   - money: 1000
 
 # Plugin's version, please don't touch it !
-version: 1.1
+version: "1.1"
