@@ -11,6 +11,7 @@ You can download the latest version of the plugin in the [releases](https://gith
 ## Updates
 ### Releases
 You can find all official update in the tab [releases](https://github.com/Palente/LuckyBlock/releases), here are the last releases:<br>
+- [LuckyBlock 1.1](https://github.com/Palente/LuckyBlock/releases/tag/1.1)
 - [LuckyBlock 1.0](https://github.com/Palente/LuckyBlock/releases/tag/1.0)
 ### Future updates
 - [ ] Custom all message and prefix.
