@@ -1,11 +1,11 @@
 name: LuckyBlock
 main: palente\luckyblock\Main
-version: "1.1"
+version: 1.2.0
 author:
   - Palente
   - Bluzzi
-api: 3.0.0
-softdepend: ["EconomyAPI", "PiggyCustomEnchants"]
+api: 4.0.0
+softdepend: ["EconomyAPI", "PiggyCustomEnchants", "BedrockEconomy"]
 
 description: "A Lucky Block Plugin by Palente"
 website: "https://github.com/Palente/LuckyBlock"

@@ -2,21 +2,19 @@
 
 namespace palente\luckyblock\events;
 
-use pocketmine\event\Listener;
-use pocketmine\event\block\BlockBreakEvent;
-
-use pocketmine\Player;
-
-use pocketmine\Server;
-
-use pocketmine\item\Item;
-
-use pocketmine\block\Block;
-
-use pocketmine\command\ConsoleCommandSender;
-
+use cooldogedev\BedrockEconomy\api\BedrockEconomyAPI;
+use onebone\economyapi\EconomyAPI;
 use palente\luckyblock\Main;
-use palente\luckyblock\SetBlock;
+use palente\luckyblock\tasks\SetBlock;
+use pocketmine\block\Block;
+use pocketmine\block\BlockFactory;
+use pocketmine\console\ConsoleCommandSender;
+use pocketmine\event\block\BlockBreakEvent;
+use pocketmine\event\Listener;
+use pocketmine\item\Item;
+use pocketmine\item\ItemFactory;
+use pocketmine\Player\Player;
+use pocketmine\Server;
 
 class BlockBreak implements Listener {
 
@@ -28,14 +26,17 @@ class BlockBreak implements Listener {
      * @priority LOW
      */
     public function onBreak(BlockBreakEvent $event) : void {
-        $luckyblock = Item::fromString(Main::getDefaultConfig()->get("block"));
-        $player = $event->getPlayer();
-        $block = $event->getBlock();
-        
-        if($event->isCancelled()) return;
-
-        if($block->getId() === $luckyblock->getId() and $block->getDamage() === $luckyblock->getDamage()){
-            $event->setDrops($this->brokeLuckyBlock($player, $block));
+        if ($event->isCancelled()) {
+            return;
+        }
+        $blockItem = Main::getApi()->parseItem(Main::getDefaultConfig()->get("block"));
+        if($blockItem instanceof Item) {
+            $luckyblock = $blockItem->getBlock();
+            $player = $event->getPlayer();
+            $block = $event->getBlock();
+            if ($block->getId() === $luckyblock->getId() && $block->getMeta() === $luckyblock->getMeta()) {
+                $event->setDrops($this->brokeLuckyBlock($player, $block));
+            }
         }
     }
 
@@ -52,35 +53,46 @@ class BlockBreak implements Listener {
 
         $loot = array_shift($loot);
         $type = array_keys($loot)[0];
-
+        $items = array();
         switch($type){
             case "items":
-                $items = array();
 
-                foreach($loot["items"] as $item){
-                    if(strpos($item, "-")){
-                        $array = explode("-", $item);
+                foreach($loot["items"] as $itemString){
+                    if(strpos($itemString, "-")){
+                        $array = explode("-", $itemString);
 
-                        $item = Item::fromString($array[0]);
-
-                        if(isset($array[1])) $item->setCount($array[1]);
-                        if(isset($array[2]) and $array[2] != "DEFAULT") $item->setCustomName(str_replace("{playerName}", $player->getName(), $array[2]));
-
-                        if(isset($array[3])){
-                            if(isset($array[4])){
-                                Main::getApi()->addEnchantment($item, $array[3], $array[4]);
-                            } else {
-                                Main::getApi()->addEnchantment($item, $array[3]);
+                        $item = Main::getApi()->parseItem($array[0]);
+                        if($item instanceof Item){
+                            if(isset($array[1])) {
+                                $item->setCount($array[1]);
                             }
+                            if(isset($array[2]) && $array[2] !== "DEFAULT") {
+                                $item->setCustomName(str_replace("{playerName}", $player->getName(), $array[2]));
+                            }
+
+                            if(isset($array[3])){
+                                if(isset($array[4])){
+                                    Main::getApi()->addEnchantment($item, $array[3], $array[4]);
+                                } else {
+                                    Main::getApi()->addEnchantment($item, $array[3]);
+                                }
+                            }
+                        }else{
+                            $player->sendMessage(Main::PREFIX . "An error has occurred, contact an administrator. LUCKYBLOCK_ITEM");
+                            Main::getInstance()->getLogger()->warning("Error, you gave an invalid item or the plugin is unable to get the item '$array[0]'");
                         }
+
                     } else {
-                        $item = Item::fromString($item);
+                        $item = Main::getApi()->parseItem($itemString);
+                        if(!$item instanceof Item){
+                            $player->sendMessage(Main::PREFIX . "An error has occurred, contact an administrator. LUCKYBLOCK_ITEM");
+                            Main::getInstance()->getLogger()->warning("Error, you gave an invalid item or the plugin is unable to get the item '$itemString'");
+                        }
                     }
 
                     $items[] = $item;
                 }
 
-                return $items;
             break;
 
             case "block":
@@ -88,12 +100,12 @@ class BlockBreak implements Listener {
 
                 if(strpos($blockId, ":")){
                     $array = explode(":", $blockId);
-                    $blockInstance = Block::get($array[0], $array[1]);
+                    $blockInstance = BlockFactory::getInstance()->get((int)$array[0], (int)$array[1]);
                 } else {
-                    $blockInstance = Block::get($blockId);
+                    $blockInstance = BlockFactory::getInstance()->get((int)$blockId, 0);
                 }
                 
-                Main::getInstance()->getScheduler()->scheduleDelayedTask(new SetBlock($block->getLevel(), $block->asVector3(), $blockInstance), 1);
+                Main::getInstance()->getScheduler()->scheduleDelayedTask(new SetBlock($block->getPosition()->getWorld(), $block->getPosition()->asVector3(), $blockInstance), 1);
             break;
 
             case "commands-player":
@@ -110,7 +122,7 @@ class BlockBreak implements Listener {
                     $cmd = str_replace("{playerName}", $player->getName(), $cmd);
 
                     //TODO: add custom message for the player.
-                    Main::getInstance()->getServer()->dispatchCommand(new ConsoleCommandSender(), $cmd);
+                    Main::getInstance()->getServer()->dispatchCommand(new ConsoleCommandSender(Server::getInstance(), Server::getInstance()->getLanguage()), $cmd);
                 }
             break;
 
@@ -118,11 +130,17 @@ class BlockBreak implements Listener {
                 if(isset(Main::getInstance()->economyPlugin)){
                     $moneyCount = $loot["money"];
 
-                    $player->sendMessage(Main::PREFIX . "You winned " . $moneyCount . Main::getInstance()->economyPlugin->getMonetaryUnit() . ", congratulation !");
-                    Main::getInstance()->economyPlugin->addMoney($player, $moneyCount);
-                } else {
-                    $player->sendMessage(Main::PREFIX . "An error has occurred, contact an administrator.");
-                    Main::getInstance()->getLogger()->warning("Error, you used a money loot, this is not possible because you have disabled the use of EconomyAPI.");
+                    $player->sendMessage(Main::PREFIX . "You won " . $moneyCount . Main::getInstance()->economyPlugin->getMonetaryUnit() . ", congratulation !");
+                    EconomyAPI::getInstance()->addMoney($player, $moneyCount);
+                }elseif(Main::getInstance()->bedrockEconomy){
+                    $moneyCount = $loot["money"];
+
+                    $player->sendMessage(Main::PREFIX . "You won " . $moneyCount  . "$, congratulation !");
+                    BedrockEconomyAPI::getInstance()->addToPlayerBalance($player->getName(), $moneyCount) ;
+                }
+                else {
+                    $player->sendMessage(Main::PREFIX . "An error has occurred, contact an administrator. LUCKYBLOCK_ECONOMY");
+                    Main::getInstance()->getLogger()->warning("Error, you used a money loot, this is not possible because you have disabled the use of an Economy Plugin (EconomyAPI\BedrockEconomy).");
                 }
             break;
 
@@ -131,8 +149,9 @@ class BlockBreak implements Listener {
             break;
         }
 
-        if(in_array($type, array("block", "money", "commands-player", "commands-server"))){
-            return array(Item::get(0, 0, 0));
+        if(in_array($type, array("block", "money", "commands-player", "commands-server")) || count($items) === 0){
+            return array(ItemFactory::air());
         }
+        return $items;
     }
 }

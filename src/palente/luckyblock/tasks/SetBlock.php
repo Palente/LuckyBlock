@@ -2,32 +2,31 @@
 
 namespace palente\luckyblock\tasks;
 
-use pocketmine\scheduler\Task;
-
-use pocketmine\level\Level;
-
-use pocketmine\math\Vector3;
-
 use pocketmine\block\Block;
+use pocketmine\math\Vector3;
+use pocketmine\scheduler\Task;
+use pocketmine\world\World;
 
 class SetBlock extends Task {
 
-    /** @var Level $level */
-    public $level;
+    /** @var World $world */
+    public World $world;
 
     /** @var Vector3 $pos */
-    public $pos;
+    public Vector3 $pos;
 
     /** @var Block $replaceBlock */
-    public $replaceBlock;
+    public Block $replaceBlock;
 
-    public function __construct(Level $level, Vector3 $pos, Block $replaceBlock){
-        $this->level = $level;
+    public function __construct(World $world, Vector3 $pos, Block $replaceBlock)
+    {
+        $this->world = $world;
         $this->pos = $pos;
         $this->replaceBlock = $replaceBlock;
     }
 
-    public function onRun($tick){
-        $this->level->getLevel()->setBlock($this->pos, $this->replaceBlock);
+    public function onRun() : void
+    {
+        $this->world->setBlock($this->pos, $this->replaceBlock);
     }
 }

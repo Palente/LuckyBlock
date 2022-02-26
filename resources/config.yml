@@ -1,8 +1,10 @@
 # Using the EconomyAPI and PiggyCustomEnchants plugins if you used them put them on true instead of false !
   # EconomyAPI: https://poggit.pmmp.io/p/EconomyAPI
   # PiggyCustomEnchants: https://poggit.pmmp.io/p/PiggyCustomEnchants
+  # BedrockEconomy: https://poggit.pmmp.io/p/BedrockEconomy
 usage-of-EconomyAPI: false
 usage-of-PiggyCustomEnchants: false
+usage-of-BedrockEconomy: false
 
 # Item of the LuckyBlock (default 19: sponge):
   # id:meta
@@ -39,11 +41,11 @@ loot:
     # - commands-server: ["say {playerName} broke a LuckyBlock."]
   - commands-server: ["say {playerName} broke a LuckyBlock."]
   - commands-server: ["effect {playerName} jump 60 2", "effect {playerName} speed 60 2"]
-  # money -> give money to a player (be careful, this feature requires the activation of the EconomyAPI plugin), examples:
+  # money -> give money to a player (be careful, this feature requires the activation of the EconomyAPI/BedrockEconomy plugin), examples:
     # - money: count
   - money: 5000
   - money: 250
   - money: 1000
 
 # Plugin's version, please don't touch it !
-version: "1.1"
+version: "1.2.0"

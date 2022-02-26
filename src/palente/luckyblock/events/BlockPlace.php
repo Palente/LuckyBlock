@@ -2,8 +2,8 @@
 
 namespace palente\luckyblock\events;
 
-use pocketmine\event\Listener;
 use pocketmine\event\block\BlockPlaceEvent;
+use pocketmine\event\Listener;
 
 class BlockPlace implements Listener {
     
@@ -16,5 +16,6 @@ class BlockPlace implements Listener {
      */
     public function onPlace(BlockPlaceEvent $event){
         //TODO...
+        //TODO: do what?
     }
 }
