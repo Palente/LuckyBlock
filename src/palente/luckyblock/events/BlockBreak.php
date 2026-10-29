@@ -7,13 +7,11 @@ use onebone\economyapi\EconomyAPI;
 use palente\luckyblock\Main;
 use palente\luckyblock\tasks\SetBlock;
 use pocketmine\block\Block;
-use pocketmine\block\BlockFactory;
 use pocketmine\console\ConsoleCommandSender;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\Listener;
 use pocketmine\item\Item;
-use pocketmine\item\ItemFactory;
-use pocketmine\Player\Player;
+use pocketmine\player\Player;
 use pocketmine\Server;
 
 class BlockBreak implements Listener {
@@ -29,12 +27,11 @@ class BlockBreak implements Listener {
         if ($event->isCancelled()) {
             return;
         }
-        $blockItem = Main::getApi()->parseItem(Main::getDefaultConfig()->get("block"));
-        if($blockItem instanceof Item) {
-            $luckyblock = $blockItem->getBlock();
+        $luckyblock = Main::getApi()->parseBlock((string) Main::getDefaultConfig()->get("block"));
+        if($luckyblock instanceof Block) {
             $player = $event->getPlayer();
             $block = $event->getBlock();
-            if ($block->getId() === $luckyblock->getId() && $block->getMeta() === $luckyblock->getMeta()) {
+            if ($block->getStateId() === $luckyblock->getStateId()) {
                 $event->setDrops($this->brokeLuckyBlock($player, $block));
             }
         }
@@ -64,7 +61,7 @@ class BlockBreak implements Listener {
                         $item = Main::getApi()->parseItem($array[0]);
                         if($item instanceof Item){
                             if(isset($array[1])) {
-                                $item->setCount($array[1]);
+                                $item->setCount((int) $array[1]);
                             }
                             if(isset($array[2]) && $array[2] !== "DEFAULT") {
                                 $item->setCustomName(str_replace("{playerName}", $player->getName(), $array[2]));
@@ -72,7 +69,7 @@ class BlockBreak implements Listener {
 
                             if(isset($array[3])){
                                 if(isset($array[4])){
-                                    Main::getApi()->addEnchantment($item, $array[3], $array[4]);
+                                    Main::getApi()->addEnchantment($item, $array[3], (int) $array[4]);
                                 } else {
                                     Main::getApi()->addEnchantment($item, $array[3]);
                                 }
@@ -90,19 +87,18 @@ class BlockBreak implements Listener {
                         }
                     }
 
-                    $items[] = $item;
+                    if($item instanceof Item){
+                        $items[] = $item;
+                    }
                 }
 
             break;
 
             case "block":
-                $blockId = $loot["block"];
-
-                if(strpos($blockId, ":")){
-                    $array = explode(":", $blockId);
-                    $blockInstance = BlockFactory::getInstance()->get((int)$array[0], (int)$array[1]);
-                } else {
-                    $blockInstance = BlockFactory::getInstance()->get((int)$blockId, 0);
+                $blockInstance = Main::getApi()->parseBlock((string) $loot["block"]);
+                if($blockInstance === null){
+                    Main::getInstance()->getLogger()->warning("Invalid replacement block in LuckyBlock loot.");
+                    break;
                 }
                 
                 Main::getInstance()->getScheduler()->scheduleDelayedTask(new SetBlock($block->getPosition()->getWorld(), $block->getPosition()->asVector3(), $blockInstance), 1);
@@ -150,7 +146,7 @@ class BlockBreak implements Listener {
         }
 
         if(in_array($type, array("block", "money", "commands-player", "commands-server")) || count($items) === 0){
-            return array(ItemFactory::air());
+            return array();
         }
         return $items;
     }

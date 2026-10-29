@@ -4,7 +4,7 @@ version: 1.2.0
 author:
   - Palente
   - Bluzzi
-api: 4.0.0
+api: 5.0.0
 softdepend: ["EconomyAPI", "PiggyCustomEnchants", "BedrockEconomy"]
 
 description: "A Lucky Block Plugin by Palente"

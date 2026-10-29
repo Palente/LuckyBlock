@@ -5,6 +5,19 @@
 ## Description
 It allows to define a block that will have various actions when broken as: custom drop (compatible with the enchantment of [PiggyCustomEnchants](https://poggit.pmmp.io/p/PiggyCustomEnchants)), given money (depends on [EconomyAPI](https://poggit.pmmp.io/p/EconomyAPI) or [BedrockEconomy](https://poggit.pmmp.io/p/BedrockEconomy)), command execution from the player or server, replaced the broken block by another block.
 
+## Compatibility
+Requires PocketMine-MP 5.x (PHP 8.2 or newer). PocketMine-MP 4 is no longer supported.
+
+Items and blocks accept names such as `sponge`, `diamond_sword`, and
+`diamond_block`. Existing numeric IDs and `id:meta` entries remain supported
+through PocketMine's legacy converters; these are old Minecraft IDs, never PM5
+runtime IDs. Block replacements also support blocks without an item form (e.g.
+legacy `10` for lava). Invalid entries are skipped and logged rather than passed
+to the drop API.
+
+The configuration version remains 1.2.0 so upgrading does not reset existing loot.
+Optional economy and enchantment plugins must also support PM5.
+
 ## Installation
 You can download the latest version of the plugin in the [releases](https://github.com/Palente/LuckyBlock/releases) tab of this repository, or via the [Poggit](https://poggit.pmmp.io/p/LuckyBlock) website.
 
