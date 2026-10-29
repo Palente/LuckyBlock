@@ -6,13 +6,13 @@ usage-of-EconomyAPI: false
 usage-of-PiggyCustomEnchants: false
 usage-of-BedrockEconomy: false
 
-# Item of the LuckyBlock (default 19: sponge):
-  # id:meta
+# Item of the LuckyBlock (default 19: sponge; names such as sponge also work):
+  # Block name or legacy id:meta
 block: "19:0"
 
 # Useful tips before starting the configuration:
   # You can use {playerName} tag to add the player name to a command, message...
-  # Item id/meta list: https://bit.ly/2J0l7QU
+  # Items accept PM5 names (diamond_sword) or legacy IDs (276, 35:14).
   # Basic enchantment name/id list: https://bit.ly/2GJXaun
   # PiggyCustomEnchants enchantment name/id list: https://bit.ly/2GVQSYX
 
